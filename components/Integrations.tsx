@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { animations } from "@/lib/animations";
 
 export default function Integrations() {
   const integrations = [
@@ -36,7 +37,7 @@ export default function Integrations() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={animations.scrollTransition()}
           className="mx-auto max-w-4xl text-center mb-12"
         >
           <h2 className="mb-4 text-3xl font-black text-gray-900 sm:text-4xl md:text-5xl">
@@ -52,7 +53,7 @@ export default function Integrations() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={animations.scrollTransition(animations.stagger.small)}
           className="mb-12 flex flex-wrap items-center justify-center gap-4"
         >
           {integrations.map((integration, index) => (
@@ -61,7 +62,9 @@ export default function Integrations() {
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.05 }}
+              transition={animations.scrollTransition(
+                index * animations.stagger.tiny
+              )}
               whileHover={{ scale: 1.1, y: -5 }}
               className="rounded-lg border border-gray-200 bg-white px-6 py-3 text-sm font-black text-gray-700 shadow-sm transition-all hover:shadow-md hover:border-violet-300"
             >
@@ -74,7 +77,7 @@ export default function Integrations() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
+          transition={animations.scrollTransition(animations.stagger.medium)}
           className="mx-auto max-w-2xl rounded-lg border border-gray-200 bg-white p-8 shadow-sm"
         >
           <p className="mb-4 font-semibold text-gray-700">

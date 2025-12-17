@@ -11,7 +11,7 @@ interface UseAnimatedCounterProps {
 
 export function useAnimatedCounter({
   targetValue,
-  duration = 2000,
+  duration = 1500, // Faster default
   decimals = 0,
   suffix = "",
   prefix = "",

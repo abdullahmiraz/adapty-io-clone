@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
 import { Card } from "@/components/ui/card";
+import { animations } from "@/lib/animations";
 
 interface StatItem {
   value: number;
@@ -17,7 +18,7 @@ interface StatItem {
 function StatCard({ stat, index }: { stat: StatItem; index: number }) {
   const { count, ref } = useAnimatedCounter({
     targetValue: stat.value,
-    duration: 2000,
+    duration: 1500,
     decimals: stat.decimals ?? 0,
     suffix: stat.suffix ?? "",
     prefix: stat.prefix ?? "",
@@ -25,7 +26,6 @@ function StatCard({ stat, index }: { stat: StatItem; index: number }) {
 
   const formatDisplayValue = () => {
     if (stat.format === "currency") {
-      // For currency like $500M, animate from 0 to 500
       if (stat.value >= 1000) {
         const billions = count / 1000;
         return `$${billions.toFixed(stat.decimals ?? 1)}B`;
@@ -35,7 +35,6 @@ function StatCard({ stat, index }: { stat: StatItem; index: number }) {
     if (stat.format === "percentage") {
       return `${count.toFixed(stat.decimals ?? 2)}%`;
     }
-    // For regular numbers with suffix like "0B"
     if (stat.suffix === "B") {
       return `${count.toFixed(stat.decimals ?? 0)}${stat.suffix}`;
     }
@@ -48,8 +47,8 @@ function StatCard({ stat, index }: { stat: StatItem; index: number }) {
       initial={{ opacity: 0, scale: 0.8 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ scale: 1.05, y: -5 }}
+      transition={animations.scrollTransition(index * animations.stagger.tiny)}
+      whileHover={animations.hover}
     >
       <Card className="border-gray-800 bg-gray-900/50 p-6 text-center backdrop-blur-sm">
         <div className="mb-2 text-5xl font-black text-violet-400 sm:text-6xl tabular-nums">
@@ -66,34 +65,34 @@ function StatCard({ stat, index }: { stat: StatItem; index: number }) {
 
 export default function Stats() {
   const stats: StatItem[] = [
-    { 
-      value: 500, 
-      label: "tracked revenue", 
+    {
+      value: 500,
+      label: "tracked revenue",
       subtext: "$500M",
       prefix: "$",
-      format: "currency"
+      format: "currency",
     },
-    { 
-      value: 99.99, 
-      label: "historical uptime", 
+    {
+      value: 99.99,
+      label: "historical uptime",
       subtext: "99.99%",
       suffix: "%",
       decimals: 2,
-      format: "percentage"
+      format: "percentage",
     },
-    { 
-      value: 100, 
-      label: "users served", 
+    {
+      value: 100,
+      label: "users served",
       subtext: "100M",
       suffix: "B",
-      format: "number"
+      format: "number",
     },
-    { 
-      value: 50, 
-      label: "API calls / month", 
+    {
+      value: 50,
+      label: "API calls / month",
       subtext: "50B",
       suffix: "B",
-      format: "number"
+      format: "number",
     },
   ];
 
@@ -104,7 +103,7 @@ export default function Stats() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={animations.scrollTransition()}
           className="mx-auto max-w-4xl text-center mb-12"
         >
           <h2 className="mb-4 text-3xl font-black sm:text-4xl md:text-5xl">

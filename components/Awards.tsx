@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { animations } from "@/lib/animations";
 
 export default function Awards() {
   const awards = [
@@ -18,7 +19,7 @@ export default function Awards() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={animations.scrollTransition()}
           className="mx-auto max-w-4xl"
         >
           <p className="mb-8 text-center text-sm font-black text-gray-600">
@@ -34,7 +35,9 @@ export default function Awards() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                transition={animations.scrollTransition(
+                  index * animations.stagger.tiny
+                )}
                 whileHover={{ scale: 1.05, y: -5 }}
                 className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-black text-gray-700"
               >

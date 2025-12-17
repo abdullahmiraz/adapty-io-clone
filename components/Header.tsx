@@ -1,37 +1,33 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Menu, X, Globe, ChevronDown, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { Menu, X, Globe, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { animations } from "@/lib/animations";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLangOpen, setIsLangOpen] = useState(false);
-  const langDropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        langDropdownRef.current &&
-        !langDropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsLangOpen(false);
-      }
-    }
-
-    if (isLangOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isLangOpen]);
 
   const languages = [
-    "EN", "Türkçe", "Deutsch", "Українська", "Polski", "Français", 
-    "Русский", "Español", "日本語", "한국어", "中文", "Português"
+    "EN",
+    "Türkçe",
+    "Deutsch",
+    "Українська",
+    "Polski",
+    "Français",
+    "Русский",
+    "Español",
+    "日本語",
+    "한국어",
+    "中文",
+    "Português",
   ];
 
   const navItems = [
@@ -41,60 +37,43 @@ export default function Header() {
     "Docs",
     "Blog",
     "Pricing",
-    "web2app"
+    "web2app",
   ];
 
   return (
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={animations.transition(animations.duration.normal)}
       className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-sm"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center gap-4"
-          >
-            <a href="/" className="text-2xl font-black text-gray-900 lowercase">
-              adapty
-            </a>
-            <div className="relative hidden sm:block" ref={langDropdownRef}>
-              <button
-                onClick={() => setIsLangOpen(!isLangOpen)}
-                className="flex items-center gap-1 text-sm font-semibold text-gray-700 hover:text-violet-600 transition-colors"
-              >
-                <Globe className="h-4 w-4" />
-                <span>EN</span>
-                <ChevronDown className="h-3 w-3" />
-              </button>
-              <AnimatePresence>
-                {isLangOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 max-h-96 overflow-y-auto z-50"
-                  >
-                    {languages.map((lang) => (
-                      <button
-                        key={lang}
-                        onClick={() => {
-                          setIsLangOpen(false);
-                        }}
-                        className="w-full text-left px-4 py-2 text-sm font-medium text-gray-700 hover:bg-violet-50 hover:text-violet-600 transition-colors"
-                      >
-                        {lang}
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
+          {/* Logo and Language Selector */}
+          <div className="flex items-center gap-4">
+            <motion.a
+              href="/"
+              whileHover={animations.hover}
+              className="text-2xl font-black text-gray-900 lowercase"
+            >
+              Adapty
+            </motion.a>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="hidden sm:flex items-center gap-1 text-sm font-semibold text-gray-700 hover:text-violet-600 transition-colors focus:outline-none">
+                  <Globe className="h-4 w-4" />
+                  <span>EN</span>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-48">
+                {languages.map((lang) => (
+                  <DropdownMenuItem key={lang} className="cursor-pointer">
+                    {lang}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
@@ -104,7 +83,10 @@ export default function Header() {
                 href={`#${item.toLowerCase()}`}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                transition={animations.transition(
+                  animations.duration.normal,
+                  index * animations.stagger.tiny
+                )}
                 className={cn(
                   "text-sm font-semibold transition-colors",
                   item === "web2app"
@@ -129,16 +111,16 @@ export default function Header() {
               </a>
               <motion.a
                 href="#signup"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={animations.hover}
+                whileTap={animations.tap}
                 className="px-4 py-2 text-sm font-bold text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors border border-white"
               >
                 Sign up <ArrowRight className="inline h-3 w-3 ml-1" />
               </motion.a>
               <motion.a
                 href="#contact"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={animations.hover}
+                whileTap={animations.tap}
                 className="px-4 py-2 text-sm font-bold text-violet-600 bg-white rounded-lg hover:bg-violet-50 transition-colors"
               >
                 Contact sales <ArrowRight className="inline h-3 w-3 ml-1" />
@@ -162,7 +144,7 @@ export default function Header() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={animations.transition(animations.duration.normal)}
               className="md:hidden py-4 border-t border-gray-200"
             >
               <nav className="flex flex-col gap-4">

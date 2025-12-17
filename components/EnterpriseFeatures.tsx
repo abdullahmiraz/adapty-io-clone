@@ -3,6 +3,7 @@
 import { Shield, Zap, Headphones } from "lucide-react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
+import { animations } from "@/lib/animations";
 
 export default function EnterpriseFeatures() {
   const features = [
@@ -42,7 +43,7 @@ export default function EnterpriseFeatures() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={animations.scrollTransition()}
           className="mx-auto max-w-4xl text-center mb-12"
         >
           <h2 className="mb-4 text-3xl font-black text-gray-900 sm:text-4xl md:text-5xl">
@@ -57,12 +58,15 @@ export default function EnterpriseFeatures() {
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={animations.scrollTransition(
+                index * animations.stagger.tiny
+              )}
               whileHover={{ y: -10, scale: 1.02 }}
             >
               <Card className="border border-gray-200 bg-white p-8 text-center">
                 <motion.div
                   whileHover={{ rotate: 5, scale: 1.1 }}
+                  transition={animations.transition(animations.duration.fast)}
                   className="mb-6 flex justify-center text-violet-600"
                 >
                   {feature.icon}

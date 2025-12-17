@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
+import { animations } from "@/lib/animations";
 import {
   Carousel,
   CarouselContent,
@@ -38,7 +39,9 @@ function StoryCard({ category, company, metric, title, index }: StoryCardProps) 
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      transition={animations.scrollTransition(
+        index * animations.stagger.tiny
+      )}
       whileHover={{ y: -10, scale: 1.02 }}
       className="h-full"
     >
@@ -52,7 +55,7 @@ function StoryCard({ category, company, metric, title, index }: StoryCardProps) 
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
         </div>
-        <div className="p-6">
+        <div className="p-4">
           <div className="mb-2 text-xs font-black uppercase tracking-wider text-violet-600">
             {category}
           </div>
@@ -62,6 +65,7 @@ function StoryCard({ category, company, metric, title, index }: StoryCardProps) 
           <motion.a
             href="#read-more"
             whileHover={{ x: 5 }}
+            transition={animations.transition(animations.duration.fast)}
             className="group/link inline-flex items-center gap-1 text-sm font-black text-violet-600 hover:text-violet-700"
           >
             Read more
@@ -138,7 +142,7 @@ export default function CustomerStories() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={animations.scrollTransition()}
           className="mx-auto max-w-4xl text-center mb-12"
         >
           <h2 className="mb-4 text-3xl font-black text-gray-900 sm:text-4xl md:text-5xl">
@@ -178,13 +182,13 @@ export default function CustomerStories() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
+          transition={animations.scrollTransition(animations.stagger.medium)}
           className="mt-12 text-center"
         >
           <motion.a
             href="#all-cases"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={animations.hover}
+            whileTap={animations.tap}
             className="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-black text-gray-700 transition-colors hover:bg-gray-50"
           >
             Read all cases

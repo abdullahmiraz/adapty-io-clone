@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Github } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { animations } from "@/lib/animations";
 import { cn } from "@/lib/utils";
 
 const platforms = [
@@ -87,7 +88,7 @@ export default function CodeExamples() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={animations.scrollTransition()}
             className="mb-12 text-center"
           >
             <h2 className="mb-4 text-3xl font-black text-gray-900 sm:text-4xl md:text-5xl">
@@ -106,7 +107,7 @@ export default function CodeExamples() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={animations.scrollTransition(animations.stagger.small)}
             className="mb-6 flex flex-wrap items-center justify-center gap-2"
           >
             {platforms.map((platform, index) => (
@@ -116,9 +117,11 @@ export default function CodeExamples() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                transition={animations.scrollTransition(
+                  index * animations.stagger.tiny
+                )}
+                whileHover={animations.hover}
+                whileTap={animations.tap}
                 className={cn(
                   "flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-black transition-colors",
                   activePlatform === platform.id
@@ -137,7 +140,7 @@ export default function CodeExamples() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={animations.scrollTransition(animations.stagger.medium)}
             className="relative rounded-xl border border-gray-200 bg-gray-900 shadow-xl overflow-hidden"
           >
             <div className="flex items-center justify-between border-b border-gray-700 px-4 py-3">
@@ -160,10 +163,12 @@ export default function CodeExamples() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
+                transition={animations.transition(animations.duration.normal)}
                 className="overflow-x-auto p-6 text-sm text-gray-100"
               >
-                <code>{codeSnippets[activePlatform as keyof typeof codeSnippets]}</code>
+                <code>
+                  {codeSnippets[activePlatform as keyof typeof codeSnippets]}
+                </code>
               </motion.pre>
             </AnimatePresence>
           </motion.div>
@@ -172,7 +177,7 @@ export default function CodeExamples() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
+            transition={animations.scrollTransition(animations.stagger.medium)}
             className="mt-8 text-center text-sm font-bold text-gray-500"
           >
             Make subscriptions easy

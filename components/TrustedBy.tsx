@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { animations } from "@/lib/animations";
 
 export default function TrustedBy() {
   const companies = [
@@ -20,7 +21,7 @@ export default function TrustedBy() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          transition={animations.scrollTransition()}
           className="mb-8 text-center text-sm font-bold text-gray-500"
         >
           Trusted by 15,000+ apps and the world&apos;s largest app publishers
@@ -32,8 +33,10 @@ export default function TrustedBy() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ scale: 1.1 }}
+              transition={animations.scrollTransition(
+                index * animations.stagger.tiny
+              )}
+              whileHover={animations.hover}
               className="flex h-12 items-center justify-center opacity-60 grayscale transition-opacity hover:opacity-100 hover:grayscale-0"
             >
               <span className="text-xl font-black text-gray-400">

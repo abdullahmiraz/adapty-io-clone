@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
 import { Card } from "@/components/ui/card";
+import { animations } from "@/lib/animations";
 
 interface FeatureCardProps {
   icon: ReactNode;
@@ -33,12 +34,15 @@ export default function FeatureCard({
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+      transition={animations.scrollTransition(
+        index * animations.stagger.small
+      )}
       whileHover={{ y: -10, scale: 1.02 }}
     >
       <Card className="group relative overflow-hidden border border-gray-200 bg-white p-8 transition-all hover:shadow-xl">
         <motion.div
           whileHover={{ rotate: 5, scale: 1.1 }}
+          transition={animations.transition(animations.duration.fast)}
           className={`mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl border ${colorClasses[color]}`}
         >
           {icon}
@@ -52,7 +56,10 @@ export default function FeatureCard({
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 + featureIndex * 0.1 }}
+              transition={animations.scrollTransition(
+                index * animations.stagger.small +
+                  featureIndex * animations.stagger.tiny
+              )}
               className="flex items-start gap-2 text-sm font-semibold text-gray-700"
             >
               <ArrowRight className="mt-1 h-4 w-4 flex-shrink-0 text-violet-600" />
